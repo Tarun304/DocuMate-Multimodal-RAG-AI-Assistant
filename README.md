@@ -70,26 +70,26 @@ src/
 ```mermaid
 flowchart TD
   A["User in Streamlit UI"] -->|Upload PDF / Process| B["/POST /api/build-index/"]
-  B --> C["PDFIngestor\nUnstructured partition_pdf"]
+  B --> C["PDFIngestor<br/>Unstructured partition_pdf"]
   C --> C1["Text Chunks"]
   C --> C2["Tables (HTML / metadata)"]
   C --> C3["Images (base64)"]
-  C1 --> D["Summarizer\nLLM summaries"]
+  C1 --> D["Summarizer<br/>LLM summaries"]
   C2 --> D
   C3 --> D
   D --> E["Indexer"]
-  E --> E1["Chroma Vectorstore\n(Gemini Embeddings)"]
-  E --> E2["InMemoryStore\n(doc_id → original)"]
+  E --> E1["Chroma Vectorstore<br/>(Gemini Embeddings)"]
+  E --> E2["InMemoryStore<br/>(doc_id → original)"]
   E --> E3["MultiVectorRetriever"]
 
   A -->|Ask question| F["/POST /api/ask-question/"]
   F --> G["QAPipeline (LangGraph)"]
-  G --> H{"Classify\nnew vs follow_up"}
+  G --> H{"Classify<br/>new vs follow_up"}
   H -- follow_up --> I{"Enough context?"}
   I -- yes --> J["Answer from memory"]
   I -- no (Rephrased Question) --> K["Retrieve via MultiVectorRetriever"]
   H -- new --> K
-  K --> L["Generate Answer\nLLM with multimodal context"]
+  K --> L["Generate Answer<br/>LLM with multimodal context"]
   J --> M["Response"]
   L --> M
   M --> A
